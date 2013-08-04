@@ -1,9 +1,10 @@
 #! /usr/bin/env python
 
-import sys,os,time,locale
+import sys,os,time
 import cPickle as p
 from datetime import date, timedelta, datetime
 #fName='/home/dan/cost/.cost_save'
+
 YR=time.strftime('%Y')#'2013'
 
 MONTHS=['January', 'February', 'March', 'April', 'May', 'June',\
@@ -23,6 +24,18 @@ port this shit to windows
 #rewrite README.md to account for the release features.
 """
 
+
+def printCurrency(n):
+    """Reimplement locale.currency """
+    if type(n)!=float: n=float(n)
+    n=round(n, 2)
+    s=str(n)
+    #case: n is int
+    #if n%1==0: return '$'+s+'.00'
+    tail=s[s.find('.')+1:]
+    if len(tail)==1: return '$'+s+'0'
+    else: return '$'+s
+    
 
 def findDay(day):
     assert day in DAYS, "wtf man"
@@ -119,9 +132,11 @@ def printData(data, cat=False):
         for i in range(len(d[1])):
             c=d[1][i].split(';')[0]
             c='('+c+') '
-            s+= '   '+(c if cat else '')+d[1][i][d[1][i].find(';')+2:].title()+(' | ' if i!=(len(d[1])-1) else '')
+            s+= '   '+(c if cat else '')+d[1][i][d[1][i].find(';')+2:d[1][i].rfind(':')].title()+\
+                ': '+printCurrency(d[1][i][d[1][i].rfind(':')+2:])+(' | ' if i!=(len(d[1])-1) else '')
         s+='\n'
     s+='.. _bottom:'
+    s+='\n'
     return s
 
 def printDay(d, day, cat=False):
@@ -167,7 +182,7 @@ def sumItem(d, item, ndays=-1):
             s=cost[cost.find(';')+2:cost.find(':')].title()
             if s==item.title():
                 res+=float(cost[cost.rfind(':')+2:])
-    return locale.currency(res)
+    return printCurrency(res)
 
 def getD():
     return p.load(open('/home/dan/.config/cost/cost_save', 'rb'))
@@ -212,7 +227,7 @@ def sumTime(d, ndays=-1):
     for d in data:
         for cost in d[1]:
             res+=float(cost[cost.rfind(':')+2:])
-    return locale.currency(res)
+    return printCurrency(res)
 
 def addComplete(d, l):
     """Here be over-wrought user input parsing"""
@@ -337,7 +352,7 @@ def breakdown(d, ndays=-1, obj=None):
     for el in s:
         l.append(float(sumCat(d, el, ndays)))
     for i in range(len(s)):
-        st+= '   '+s[i]+' constituted '+str(round((l[i]/tot*100),2))+'% ('+locale.currency(l[i])+')\n'
+        st+= '   '+s[i]+' constituted '+str(round((l[i]/tot*100),2))+'% ('+printCurrency(l[i])+')\n'
     if obj is not None: obj.text=st
     else: return st
         

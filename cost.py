@@ -9,18 +9,6 @@ SMONTHS=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', '
 DAYS=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 SDAYS=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-"""
-TODO:
-#prompt the user for category if none is given
-#print -c
-#better option parser?
-make sure all features actually fucking work
-make a substantial sample save file for me/other people to play with
-port this shit to windows
-#rewrite README.md to account for the release features.
-"""
-
-
 def printCurrency(n):
     """Reimplement locale.currency """
     if type(n)!=float: n=float(n)

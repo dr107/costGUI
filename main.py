@@ -23,10 +23,11 @@ from os.path import isfile
 from functools import partial
 """
 TODO:
+CLEAR RECORD!!!!
 finish (implement buttons) and possibly re-align total screen
 breakdowns (my body is SO FUCKING READY)
-
 Intelligent guessing of categories (in both this and cmd versions)
+Clean up code/prepare for release.
 """
 
 class CostTextInput(TextInput):
@@ -349,11 +350,13 @@ class CostApp(App):
     d=None
     fName=None
     man=None
+    def firstRun(self):
+        dump(load(open('cost_save_example', 'rb')), open(self.fName, 'wb'))
     def build(self):
         self.on_pause=self.save
         self.on_stop=self.save
         self.fName=self.user_data_dir+'/cost_save'
-        if not isfile(self.fName): dump({}, open(self.fName, 'wb'))
+        if not isfile(self.fName): self.firstRun()
         self.d=p.load(open(self.fName, 'rb'))
         sm=ScreenManager()
         sm.add_widget(MainScreen(name='main'))

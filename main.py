@@ -23,11 +23,11 @@ from os.path import isfile
 from functools import partial
 """
 TODO:
-CLEAR RECORD!!!!
+return for adding while in the category buffer
 finish (implement buttons) and possibly re-align total screen
 breakdowns (my body is SO FUCKING READY)
 Intelligent guessing of categories (in both this and cmd versions)
-Clean up code/prepare for release.
+Clean up code/prepare for release (icon, etc).
 """
 
 class CostTextInput(TextInput):
@@ -82,9 +82,53 @@ class AnlzScreen(Screen):
     pass
 
 class MainScreen(Screen):
-    pass
+
+    def __init__(self, **kwargs):
+        super(MainScreen,self).__init__(**kwargs)
+        if App.get_running_app().firstRun: Clock.schedule_once(self.firstRun, .1)
+
+    def firstRun(self, obj):
+        pu=Popup(size_hint=(.8, .6), title='Welcome to Cost!')
+        lo=BoxLayout(orientation='vertical')
+        lab=Label(text="Hi! Cost is a program designed to help you track and\n"+\
+        "understand where your money is going. We've provided you with a one-month\n"+\
+        "example record so that you can explore some of the analysis features.\n"+\
+        "When you think you get the idea go to Help->Clear Record from the main screen\n"+\
+        "and hit OK at the prompt. Enjoy, and remember that this tool will only help you\n"
+        "if you record every expense, no matter how minor. Those $2.11 coffees add up ;)")
+        btn=Button(text='Got it', on_release=pu.dismiss, size_hint_y=.25)
+        lo.add_widget(lab)
+        lo.add_widget(btn)
+        pu.content=lo
+        pu.open()
+        
+    
 class HelpScreen(Screen):
-    pass
+    clearPU=None
+    def clearRecord(self):
+        s ="Are you sure about this? This action will remove your\n"
+        s+="record as it is. It will be saved as /sdcard/cost/cost_backup.\n"
+        s+="If you want to restore it, you will have to rename that file to\n"
+        s+="cost_save manually, and as of now there is no way to merge records\n"
+        s+="Of course, if you're just removing the example and want to get\n"
+        s+="started, go right ahead"
+        pu=Popup(size_hint=(.8, .6), title='Are you sure?')
+        self.clearPU=pu
+        lo=BoxLayout(orientation='vertical')
+        lab=Label(text=s)
+        btn1=Button(text='Do it', on_release=self.doIt, size_hint_y=.25)
+        btn2=Button(text='On second thought...', on_release=pu.dismiss, size_hint_y=.25)
+        lo.add_widget(lab)
+        lo.add_widget(btn1)
+        lo.add_widget(btn2)
+        pu.content=lo
+        pu.open()
+    
+    def doIt(self, obj):
+        dump(App.get_running_app().d, open(App.get_running_app().user_data_dir+'/cost_backup', 'wb'))
+        App.get_running_app().d={}
+        App.get_running_app().save()
+        self.clearPU.dismiss()
 
 class SumNameIn(TextInput):
     """Exists for the sole purpose of item sum """
@@ -251,7 +295,6 @@ class BkdwnScreen(Screen):
     wk_btn=ObjectProperty()
     at_btn=ObjectProperty()
     def __init__(self, **kwargs):
-        print 'It called something at least'
         super(BkdwnScreen, self).__init__(**kwargs)
         self.rst.text=breakdown(App.get_running_app().d)
         self.mo_btn.on_release=partial(breakdown,\
@@ -350,13 +393,18 @@ class CostApp(App):
     d=None
     fName=None
     man=None
-    def firstRun(self):
+    firstRun=False
+
+    def firstRunOp(self):
         dump(load(open('cost_save_example', 'rb')), open(self.fName, 'wb'))
+        self.firstRun=True
+
     def build(self):
+        self.firstRun=False
         self.on_pause=self.save
         self.on_stop=self.save
         self.fName=self.user_data_dir+'/cost_save'
-        if not isfile(self.fName): self.firstRun()
+        if not isfile(self.fName): self.firstRunOp()
         self.d=p.load(open(self.fName, 'rb'))
         sm=ScreenManager()
         sm.add_widget(MainScreen(name='main'))
@@ -373,5 +421,6 @@ class CostApp(App):
 
     def save(self):
         dump(self.d, open(self.fName,'wb'))
+
 if __name__=='__main__':
     CostApp().run()

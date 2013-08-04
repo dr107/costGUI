@@ -18,8 +18,8 @@
         spacing: "30dp"
         padding: "100dp"
         Label:
-            text: "Cost (v 0.5)"
-            font_size: "15dp"
+            text: "Cost (v 0.9)"
+            font_size: "30dp"
         Button:
             text: 'View'
             on_press: 
@@ -167,11 +167,15 @@
                 root.manager.transition=SlideTransition(direction='up')
                 root.manager.current='rm'            
         Button:
+            text: 'Clear Record'
+            on_release: root.clearRecord()
+
+        Button:
             text: 'Back to Main'
             on_release:
                 root.manager.transition=SlideTransition(direction="down")
                 root.manager.current='main'    
-        Label:
+
 <RMScreen>:
     l: left
     r: right
@@ -248,9 +252,11 @@
         orientation: 'vertical'
         Label:
             text: 'Breakdown of costs'
+            font_size: '30dp'
         Label:
             id: _rst
         GridLayout:
+            size_hint_y: .25
             cols: 3
             Button:
                 id: _wk_btn
@@ -261,6 +267,17 @@
             Button:
                 id: _at_btn
                 text: 'All time'
+            BoxLayout:
+                size_hint: 1, .25
+                orientation: 'horizontal'
+        
+        Button:
+            size_hint_y: .25
+            text: 'Back'
+            on_release:
+                root.manager.transition=SlideTransition(direction="left")
+                root.manager.current='anlz'
+
 
 <TotScreen>:
     title: _title
@@ -322,7 +339,7 @@
             Label:
                 size_hint_x: .25
         GridLayout:
-            size_hint: 1,.5
+            size_hint: 1,.3
             id: _grd
             cols: 3
             Button:
@@ -337,3 +354,4 @@
                 id: _at_btn
                 text: 'All time'
                 on_release: root.displayATTops()
+                    

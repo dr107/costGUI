@@ -1,0 +1,339 @@
+#:import printAll cost.printAll 
+#:import load cPickle.load
+#:import dump cPickle.dump
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+#:import SwapTransition kivy.uix.screenmanager.SwapTransition
+#:import WipeTransition kivy.uix.screenmanager.WipeTransition
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+#:import Clock kivy.clock.Clock
+#:import date datetime.date
+#:import App kivy.app.App
+#:import DateIn main.DateIn
+#:import sumTime cost.sumTime
+#:import breakdown cost.breakdown
+#:import partial functools.partial
+<MainScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: "30dp"
+        padding: "100dp"
+        Label:
+            text: "Cost (v 0.5)"
+            font_size: "15dp"
+        Button:
+            text: 'View'
+            on_press: 
+                root.manager.get_screen('view').reload()
+                root.manager.get_screen('view').log.goto('_bottom:')
+                root.manager.transition=SlideTransition(direction="left")
+                root.manager.current='view'
+        Button:
+            text: 'Add'
+            on_press:
+                root.manager.transition=SlideTransition(direction="right")
+                root.manager.current='add'
+        Button:
+            text: 'Analyze'
+            on_release:
+                root.manager.transition=SlideTransition(direction="down")
+                root.manager.current='anlz'
+        Button:
+            text: 'Need Help?'
+            on_release:
+                root.manager.transition=SlideTransition(direction="up")
+                root.manager.current='help'
+
+<ViewScreen>:
+    log: cost_log
+    check: cb
+    BoxLayout:
+        orientation: 'vertical'
+        RstDocument:
+            id: cost_log
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1,.1
+            Button:
+                text: 'Back to Main'
+                
+                on_press:
+                    root.manager.transition=SlideTransition(direction="right")
+                    root.manager.current='main'
+            Label:
+                text: 'Show Categories'
+                size_hint: .2,1
+            CheckBox:
+                id: cb
+                size_hint: .1,1
+                
+
+<AddScreen>:
+    name_box: name_in
+    price_box: price_in
+    date_box: date_in
+    cat_box: cat_in
+    save: save_btn
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Add Expense'
+            size_hint: 1, 0.1
+        Button:
+            text: 'Return to main (without saving)'
+            size_hint: 1,.1
+            on_press:
+                root.manager.transition=SlideTransition(direction='left')
+                root.manager.current='main'
+        GridLayout:
+            spacing: "50dp"
+            padding: "20dp"
+            cols: 2
+            Label:
+                text: 'Name'
+            CostTextInput:
+                id: name_in
+                next: price_in            
+            Label:
+                text: 'Price'
+            CostTextInput:
+                multiline: False
+                id: price_in
+                next: date_in
+            Label:
+                text: 'Date'
+            CostTextInput:
+                multiline: False
+                text: date.today().strftime('%B %d %Y')
+                id: date_in
+                next: cat_in
+            Label:
+                text: 'Category'
+            CostTextInput:
+                multiline: False
+                id: cat_in
+                next: save_btn
+                
+        Button:
+            id: save_btn
+            text: 'Save and Return'
+            size_hint: 1,.1
+            on_press:
+                success=root.print_data()
+                root.manager.transition=SlideTransition(direction='left')
+                root.manager.current=('main' if success else 'add')
+
+<AnlzScreen>:
+    BoxLayout:
+        spacing: "30dp"
+        padding: "100dp"
+        orientation: 'vertical'
+        Label:
+            text: 'Analyze'
+            font_size: '30dp'
+        Button:
+            text: 'Totals'
+            on_release:
+                root.manager.get_screen('tot').reset()
+                root.manager.transition=SlideTransition(direction="down")
+                root.manager.current='tot'
+        Button:
+            text: 'Breakdowns (by Category)'
+            on_release:
+                root.manager.transition=SlideTransition(direction="right")
+                root.manager.current='bkdwn'
+        Button:
+            text: 'Back to Main'
+            on_release: 
+                root.manager.transition=SlideTransition(direction='up')
+                root.manager.current='main'
+        Label:
+<HelpScreen>:
+    BoxLayout:
+        spacing: "30dp"
+        padding: "100dp"
+        orientation: "vertical"
+        Label:
+            text: 'Help'
+            font_size: "30dp"
+        Button:
+            text: 'Input Problems?'
+            on_release:
+                root.manager.transition=SlideTransition(direction='left')
+                root.manager.current='in'            
+        Button:
+            text: 'Made a Mistake?'
+            on_release: 
+                root.manager.get_screen('rm').reset()
+                root.manager.transition=SlideTransition(direction='up')
+                root.manager.current='rm'            
+        Button:
+            text: 'Back to Main'
+            on_release:
+                root.manager.transition=SlideTransition(direction="down")
+                root.manager.current='main'    
+        Label:
+<RMScreen>:
+    l: left
+    r: right
+    date_bx: date_in
+    log: the_log
+    lab: _lab
+    day_btn: rm_day_btn
+    ent_btn: rm_ent_btn
+    cancel: _cancel
+    BoxLayout:
+        BoxLayout:
+            id: left
+            orientation: "vertical"
+            Label:
+                id: _blank_one
+            Label:
+                id: _lab
+                halign: 'center'
+                size_hint: 1,.2
+                text: "What day has the problem?"       
+            DateIn:
+                id: date_in
+                size_hint: 1, None
+                height: "40dp"
+                text: date.today().strftime('%B %d %Y')
+            Label:
+                id: _blank_two
+            BoxLayout:
+                cols: 2
+                size_hint_y: None
+                height: "80dp"
+                orientation: "vertical"
+                Button:
+                    id: rm_day_btn
+                    text: 'Remove entire Day'
+                Button:
+                    id: rm_ent_btn
+                    text: 'Remove individual entry'
+        BoxLayout:
+            id: right
+            orientation: "vertical"
+            RstDocument:
+                id: the_log
+            Button:
+                id: _cancel
+                text: 'Cancel'
+                size_hint_y: None
+                height: "40dp"
+                on_release:
+                    root.toHelp(self)
+
+<InputScreen>:
+    doc: r_doc
+    RstDocument:
+        id: r_doc
+    GridLayout:
+        size_hint: 1,.1
+        cols: 2
+        Button:
+            text: 'Return to Main'
+            on_release: 
+                root.toHelp()
+                Clock.schedule_once(root.toMain, .5)
+        Button:
+            text: 'Return to Help'
+            on_release: root.toHelp()
+
+<BkdwnScreen>:
+    rst: _rst
+    wk_btn: _wk_btn
+    mo_btn: _mo_btn
+    at_btn: _at_btn
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Breakdown of costs'
+        Label:
+            id: _rst
+        GridLayout:
+            cols: 3
+            Button:
+                id: _wk_btn
+                text: 'Weekly'
+            Button:   
+                id: _mo_btn
+                text: 'Monthly'
+            Button:
+                id: _at_btn
+                text: 'All time'
+
+<TotScreen>:
+    title: _title
+    tots: _tots
+    top_title: _top_title
+    tops: _tops
+    grd: _grd
+    wk_btn: _wk_btn
+    mo_btn: _mo_btn
+    at_btn: _at_btn
+    BoxLayout:
+        orientation: 'vertical'
+        GridLayout:
+            size_hint:1,.5
+            cols:2
+            Label:
+                id: _title
+                text: 'Total Expenditures'
+                halign: 'center'
+            Button:
+                size_hint_x: .25
+                text: 'Back'
+                on_release:
+                    root.manager.transition=SlideTransition(direction='up')
+                    root.manager.current='anlz'
+        GridLayout:
+            cols: 2
+            size_hint_y: .5
+            Label:
+                id: _tots
+                halign: 'center'
+            Button:
+                text: 'Back to main'
+                size_hint_x: .25
+                on_release:
+                    root.manager.transition=SlideTransition(direction="up")
+                    root.manager.current='anlz'
+                    Clock.schedule_once(root.gotoMain, .5)
+        GridLayout:
+            cols: 2
+            size_hint_y: .5
+            Label:
+                id: _top_title
+                halign: 'center'
+                valign: 'bottom'
+                text: 'Top Items (All Time)'
+                size_hint: 1,.1
+                bold: True
+            Button:
+                size_hint_x: .25
+                text: 'Sum Item'
+                on_release: root.itemSum()
+        GridLayout:
+            cols: 2
+            Label:
+                id: _tops
+                halign: 'center'
+                valign: 'top'
+            Label:
+                size_hint_x: .25
+        GridLayout:
+            size_hint: 1,.5
+            id: _grd
+            cols: 3
+            Button:
+                id: _wk_btn
+                text: 'Week'
+                on_release: root.displayWKTops()
+            Button:
+                id: _mo_btn
+                text: 'Month'
+                on_release: root.displayMOTops()
+            Button:
+                id: _at_btn
+                text: 'All time'
+                on_release: root.displayATTops()

@@ -1,12 +1,8 @@
-#! /usr/bin/env python
-
 import sys,os,time
 import cPickle as p
 from datetime import date, timedelta, datetime
-#fName='/home/dan/cost/.cost_save'
 
 YR=time.strftime('%Y')#'2013'
-
 MONTHS=['January', 'February', 'March', 'April', 'May', 'June',\
 	'July', 'August', 'September', 'October', 'November', 'December']
 SMONTHS=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']

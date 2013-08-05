@@ -9,6 +9,18 @@ SMONTHS=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', '
 DAYS=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 SDAYS=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
+
+
+def getLastInstance(d, item):
+    
+    data=getData(d)
+    data.reverse()
+    for t in data:
+        for cost in t[1]:
+            name=cost[cost.find(';')+2:cost.rfind(':')]
+            if name.title()==item.title(): return cost
+    raise ValueError()
+
 def printCurrency(n):
     """Reimplement locale.currency """
     if type(n)!=float: n=float(n)

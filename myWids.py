@@ -58,6 +58,7 @@ class QuickAddBox(TextInput):
         d=App.get_running_app().d
         addComplete(d, l)
         self.text=''
+        self.focus=False
 
     def displaySuccess(self, cost):
         cat=cost[:cost.find(';')].title()

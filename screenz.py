@@ -21,6 +21,15 @@ from cPickle import load, dump
 from datetime import *
 from os.path import isfile
 from functools import partial
+
+class QuickAddScreen(Screen):
+    qab=ObjectProperty()
+    sub_btn=ObjectProperty()
+    det_btn=ObjectProperty()
+    back_btn=ObjectProperty()
+
+    
+
 class RMScreen(Screen):
     log=ObjectProperty()
     lab=ObjectProperty()

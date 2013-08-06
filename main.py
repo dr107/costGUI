@@ -40,6 +40,7 @@ class CostApp(App):
         sm.add_widget(InputScreen(name='in'))
         sm.add_widget(BkdwnScreen(name='bkdwn'))
         sm.add_widget(TotScreen(name='tot'))
+        sm.add_widget(QuickAddScreen(name='qadd'))
         self.man=sm
         return sm
 

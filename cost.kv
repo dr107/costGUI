@@ -31,7 +31,7 @@
             text: 'Add'
             on_press:
                 root.manager.transition=SlideTransition(direction="right")
-                root.manager.current='add'
+                root.manager.current='qadd'
         Button:
             text: 'Analyze'
             on_release:
@@ -75,15 +75,6 @@
     save: save_btn
     BoxLayout:
         orientation: 'vertical'
-        Label:
-            text: 'Add Expense'
-            size_hint: 1, 0.1
-        Button:
-            text: 'Return to main (without saving)'
-            size_hint: 1,.1
-            on_press:
-                root.manager.transition=SlideTransition(direction='left')
-                root.manager.current='main'
         GridLayout:
             spacing: "50dp"
             padding: "20dp"
@@ -112,7 +103,17 @@
                 multiline: False
                 id: cat_in
                 next: save_btn
-                
+
+        Button:
+            text: 'Return to main (without saving)'
+            size_hint: 1,.1
+            on_press:
+                root.manager.transition=SlideTransition(direction='left')
+                root.manager.current='main'
+
+        Label:
+            size_hint: 1, 0.1
+
         Button:
             id: save_btn
             text: 'Save and Return'
@@ -121,6 +122,8 @@
                 success=root.print_data()
                 root.manager.transition=SlideTransition(direction='left')
                 root.manager.current=('main' if success else 'add')
+
+
 
 <AnlzScreen>:
     BoxLayout:
@@ -354,4 +357,39 @@
                 id: _at_btn
                 text: 'All time'
                 on_release: root.displayATTops()
-                    
+
+<QuickAddScreen>:
+    qab: _qab
+    sub_btn: _sub_btn
+    det_btn: _det_btn
+    back_btn: _back_btn
+    BoxLayout:
+        spacing: "30dp"
+        padding: "50dp"
+        orientation: 'vertical'
+        Label:
+            text: 'Add'
+            font_size: "30dp"
+        Label:
+            text: 'Quick Add'
+        QuickAddBox:
+            id: _qab
+            text: 'Type the name of a previous entry..'
+            multiline: False
+        Button:
+            id: _sub_btn
+            text: 'Submit'
+            on_release: root.qab.addQuick(root.qab.text)
+        Button:
+            id: _det_btn
+            text: 'Give details'
+            on_release:
+                root.manager.transition=SlideTransition(direction="right")
+                root.manager.current='add'
+        Button: 
+            id: _back_btn
+            text: 'Back'
+            on_release:
+                root.manager.transition=SlideTransition(direction="left")
+                root.manager.current='main'
+            

@@ -4,12 +4,12 @@ from screenz import *
 import cPickle as p
 from os.path import isfile
 """
-more meaningless changes
+
 TODO:
+FIX BUGS IN RM-DAY?!?!?!?
 return for adding while in the category buffer
 finish (implement buttons) and possibly re-align total screen
 breakdowns (my body is SO FUCKING READY)
-Intelligent guessing of categories (in both this and cmd versions)
 Clean up code/prepare for release (icon, format UI better for a given platform etc).
 Package into desktop (Win, OSX)
 """

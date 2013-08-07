@@ -28,8 +28,6 @@ class QuickAddScreen(Screen):
     det_btn=ObjectProperty()
     back_btn=ObjectProperty()
 
-    
-
 class RMScreen(Screen):
     log=ObjectProperty()
     lab=ObjectProperty()
@@ -173,7 +171,6 @@ class BkdwnScreen(Screen):
                                            App.get_running_app().d, 7, self.rst)
         self.at_btn.on_release=partial(breakdown,\
                                            App.get_running_app().d, -1, self.rst)
-
 class TotScreen(Screen):
     title=ObjectProperty()
     tots=ObjectProperty()

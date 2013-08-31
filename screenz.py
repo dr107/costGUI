@@ -52,7 +52,7 @@ class RMScreen(Screen):
         self.genlog()
         self.lab.text="What day has the problem?\n"+\
             "(RET to delete entire day)"
-        self.date_bx.entryMode=False
+        self.date_bx.nameMode=False
         
     def genlog(self):
         self.log.text=printAll(App.get_running_app().d, True)

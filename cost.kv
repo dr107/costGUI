@@ -16,7 +16,7 @@
     BoxLayout:
         orientation: 'vertical'
         spacing: "30dp"
-        padding: "100dp"
+        padding: "10dp"
         Label:
             text: "Cost (v 0.9.5)"
             font_size: "30dp"
@@ -60,7 +60,7 @@
                     root.manager.transition=SlideTransition(direction="right")
                     root.manager.current='main'
             Label:
-                text: 'Show Categories'
+                text: 'Categories'
                 size_hint: .2,1
             CheckBox:
                 id: cb
@@ -128,7 +128,7 @@
 <AnlzScreen>:
     BoxLayout:
         spacing: "30dp"
-        padding: "100dp"
+        padding: "10dp"
         orientation: 'vertical'
         Label:
             text: 'Analyze'
@@ -140,7 +140,7 @@
                 root.manager.transition=SlideTransition(direction="down")
                 root.manager.current='tot'
         Button:
-            text: 'Breakdowns (by Category)'
+            text: 'Breakdowns'
             on_release:
                 root.manager.transition=SlideTransition(direction="right")
                 root.manager.current='bkdwn'
@@ -153,7 +153,7 @@
 <HelpScreen>:
     BoxLayout:
         spacing: "30dp"
-        padding: "100dp"
+        padding: "10dp"
         orientation: "vertical"
         Label:
             text: 'Help'
@@ -198,7 +198,7 @@
                 id: _lab
                 halign: 'center'
                 size_hint: 1,.2
-                text: "What day has the problem?"       
+                text: "What day?"       
             DateIn:
                 id: date_in
                 size_hint: 1, None

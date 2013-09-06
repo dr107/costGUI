@@ -83,10 +83,13 @@ class RMScreen(Screen):
             self.entryNotFound()
 
     def entryNotFound(self):
-        pu=Popup(title="Failure..", size_hint=(.5,.5))
+        pu=Popup(title="Failure..", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
-        blo.add_widget(Label(text='There is no record for that entry\n'+\
-                                 'Check your input'))
+        lab=Label(text_size=pu.size, text='There is no record for that entry\n'+\
+                                 'Check your input', valign='middle', halign='center')
+        lab.bind(size=lab.setter('text_size')) 
+        lab.size_hint=(1,1)        
+        blo.add_widget(lab)
         backBtn=Button(text='Go Back', size_hint=(1,.33))
         backBtn.bind(on_press=self.toHelp, on_release=pu.dismiss)
         blo.add_widget(backBtn)
@@ -99,10 +102,13 @@ class RMScreen(Screen):
 
     
     def dayNotFound(self):
-        pu=Popup(title="Failure..", size_hint=(.5,.5))
+        pu=Popup(title="Failure..", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
-        blo.add_widget(Label(text='There is no record for that day\n'+\
-                      'Check Help->Input Help for acceptable date formats'))
+        lab=Label(text_size=pu.size, text='There is no record for that day\n'+\
+                      'Check Help->Input Help for acceptable date formats', halign='center', valign='middle')
+        lab.bind(size=lab.setter('text_size')) 
+        lab.size_hint=(1,1)
+        blo.add_widget(lab)
         backBtn=Button(text='Go Back', size_hint=(1,.33))
         backBtn.bind(on_press=self.toHelp, on_release=pu.dismiss)
         blo.add_widget(backBtn)
@@ -115,10 +121,13 @@ class RMScreen(Screen):
 
 
     def rmSuccess(self, entry=False):
-        pu=Popup(title="Success!", size_hint=(.5,.5))
+        pu=Popup(title="Success!", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
-        blo.add_widget(Label(text=('Day' if not entry else 'Entry')+\
-                             ' removed successfully'))
+        lab=Label(text=('Day' if not entry else 'Entry')+\
+                             ' removed successfully',halign='center', valign='middle')
+        lab.bind(size=lab.setter('text_size')) 
+        lab.size_hint=(1,1)
+        blo.add_widget(lab)
         backBtn=Button(text='Go Back', size_hint=(1,.33))
         backBtn.bind(on_press=self.toHelp, on_release=pu.dismiss)
         blo.add_widget(backBtn)
@@ -222,9 +231,11 @@ class TotScreen(Screen):
 
     def itemSum(self):
         textl=['herp'] # stupid trick
-        pu=Popup(title='Which?', size_hint=(.5,.5))
+        pu=Popup(title='Which?', size_hint=(1,.75))
         lay=BoxLayout(orientation='vertical')
-        lab=Label(text='Which item do you want to get totals for?')
+        lab=Label(text_size=pu.size, text='Which item do you want to get totals for?', halign='center', valign='middle')
+        lab.bind(size=lab.setter('text_size')) 
+        lab.size_hint=(1,1)
         txi=SumNameIn(pu, multiline=False)
         btn=Button(text='Submit', on_release=pu.dismiss)
         lay.add_widget(lab)
@@ -239,10 +250,12 @@ class TotScreen(Screen):
         s='Amount spent on '+name+' this week: '+sumItem(App.get_running_app().d, name, 7)+'\n'
         s+='This month: '+sumItem(App.get_running_app().d, name, 30)+'\n'
         s+='All time: '+sumItem(App.get_running_app().d, name)+'\n'
-        pu=Popup(title='Totals', size_hint=(.5,.5))
+        pu=Popup(title='Totals', size_hint=(1,.75))
         lay=BoxLayout(orientation='vertical')
-        lab=Label(text=(s if t>0 else 'There is no record of any entry with that name.\nTry again' ),\
-                      halign='center')
+        lab=Label(text_size=pu.size, text=(s if t>0 else 'There is no record of any entry with that name.\nTry again' ),\
+                      halign='center',valign='middle')
+        lab.bind(size=lab.setter('text_size')) 
+        lab.size_hint=(1,1)
         btn=Button(text='OK', on_release=pu.dismiss, size_hint_y=.3)
         lay.add_widget(lab)
         lay.add_widget(btn)
@@ -274,8 +287,12 @@ class AddScreen(Screen):
             addComplete(d,l)
             return True
         except:
-            pu=Popup(title='Input Error', size_hint=(.5,.5), auto_dismiss=False)
-            label=Label(text='Something seems to be wrong with your input.\nCheck help if you\'re unsure what\'s wrong.')
+            pu=Popup(title='Input Error', size_hint=(1,.75), auto_dismiss=False)
+            label=Label(text_size=pu.size, 
+                        text='Something seems to be wrong with your input.\nCheck help if you\'re unsure what\'s wrong.',
+                        halign='center',valign='middle')
+            label.bind(size=label.setter('text_size')) 
+            label.size_hint=(1,1)
             disBtn=Button(text='OK', size_hint=(1,.4))
             disBtn.bind(on_release=lambda disBtn: pu.dismiss(disBtn))
             puLO=BoxLayout(orientation='vertical')
@@ -305,34 +322,38 @@ class MainScreen(Screen):
         if App.get_running_app().firstRun: Clock.schedule_once(self.firstRun, .1)
 
     def firstRun(self, obj):
-        pu=Popup(size_hint=(.8, .6), title='Welcome to Cost!')
+        pu=Popup(size_hint=(1, .6), title='Welcome to Cost!')
         lo=BoxLayout(orientation='vertical')
-        lab=Label(text="Hi! Cost is a program designed to help you track and\n"+\
-        "understand where your money is going. We've provided you with a one-month\n"+\
-        "example record so that you can explore some of the analysis features.\n"+\
-        "When you think you get the idea go to Help->Clear Record from the main screen\n"+\
-        "and hit OK at the prompt. Enjoy, and remember that this tool will only help you\n"
-        "if you record every expense, no matter how minor. Those $2.11 coffees add up ;)")
+        lab=Label(text="Hi! Cost is a program designed to help you track and "+\
+        "understand where your money is going. We've provided you with a one-month "+\
+        "example record so that you can explore some of the analysis features. "+\
+        "When you think you get the idea go to Help->Clear Record from the main screen "+\
+        "and hit OK at the prompt. Enjoy, and remember that this tool will only help you "
+        "if you record every expense, no matter how minor. Those $2.11 coffees add up ;)", valign='middle', halign='center')
+        lab.bind(size=lab.setter('text_size')) 
+        lab.size_hint=(1,1)
         btn=Button(text='Got it', on_release=pu.dismiss, size_hint_y=.25)
         lo.add_widget(lab)
         lo.add_widget(btn)
         pu.content=lo
+        lab.text_size=lab.size
+        print lab.size
         pu.open()
         
     
 class HelpScreen(Screen):
     clearPU=None
     def clearRecord(self):
-        s ="Are you sure about this? This action will remove your\n"
-        s+="record as it is. It will be saved as /sdcard/cost/cost_backup.\n"
-        s+="If you want to restore it, you will have to rename that file to\n"
-        s+="cost_save manually, and as of now there is no way to merge records\n"
-        s+="Of course, if you're just removing the example and want to get\n"
+        s ="Are you sure about this? This action will remove your"
+        s+="record as it is. It will be saved as /sdcard/cost/cost_backup."
+        s+="If you want to restore it, you will have to rename that file to"
+        s+="cost_save manually, and as of now there is no way to merge records"
+        s+="Of course, if you're just removing the example and want to get"
         s+="started, go right ahead"
         pu=Popup(size_hint=(.8, .6), title='Are you sure?')
         self.clearPU=pu
         lo=BoxLayout(orientation='vertical')
-        lab=Label(text=s)
+        lab=Label(text=s,halign='center',valign='middle')
         btn1=Button(text='Do it', on_release=self.doIt, size_hint_y=.25)
         btn2=Button(text='On second thought...', on_release=pu.dismiss, size_hint_y=.25)
         lo.add_widget(lab)

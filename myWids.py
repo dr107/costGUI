@@ -65,12 +65,15 @@ class QuickAddBox(TextInput):
         name=cost[cost.find(';')+2:cost.rfind(':')].title()
         price=cost[cost.rfind(':')+2:]
         l=[name, price, cat]
-        pu=Popup(title="Entry Found!", size_hint=(.5,.5))
+        pu=Popup(title="Entry Found!", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
-        blo.add_widget(Label(text='The following data were found:\n'+\
-                                 'Name: '+name+'\n'
-                             'Price: '+price+'\n'
-                             'Category: '+cat))
+        lab=Label(text_size=pu.size, text='The following data were found:\n'+\
+                  'Name: '+name+'\n'
+              'Price: '+price+'\n'
+              'Category: '+cat,valign='middle', halign='center')
+        lab.bind(size=lab.setter('text_size')) 
+        lab.size_hint=(1,1)        
+        blo.add_widget(lab)
         backBtn=Button(text='Log it', size_hint=(1,.33))
         backBtn.bind(on_press=lambda obj: self.logIt(l), on_release=pu.dismiss)
         blo.add_widget(backBtn)
@@ -82,10 +85,15 @@ class QuickAddBox(TextInput):
         
 
     def displayFailure(self):
-        pu=Popup(title="Failure..", size_hint=(.5,.5))
+        pu=Popup(title="Failure..", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
-        blo.add_widget(Label(text='There are no entries with that name\n'+\
-                                 'Check your input, or use the normal add function'))
+        lab=Label(text_size=pu.size, text='There are no entries with that name\n'+\
+                      'Check your input, or use the normal add function',
+                  valign='middle', halign='center'
+                  )
+        lab.bind(size=lab.setter('text_size')) 
+        lab.size_hint=(1,1)        
+        blo.add_widget(lab)
         stayBtn=Button(text='OK', size_hint=(1,.33))
         stayBtn.bind(on_release=pu.dismiss)
         blo.add_widget(stayBtn)

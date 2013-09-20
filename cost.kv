@@ -18,7 +18,7 @@
         spacing: "30dp"
         padding: "10dp"
         Label:
-            text: "Cost (v 0.9.5)"
+            text: "Cost (v 1.0.0)"
             font_size: "30dp"
         Button:
             text: 'View'
@@ -81,17 +81,20 @@
             cols: 2
             Label:
                 text: 'Name'
+                size_hint_x: 0.5
             CostTextInput:
                 id: name_in
                 next: price_in            
             Label:
                 text: 'Price'
+                size_hint_x: .5
             CostTextInput:
                 multiline: False
                 id: price_in
                 next: date_in
             Label:
                 text: 'Date'
+                size_hint_x: .5
             CostTextInput:
                 multiline: False
                 text: date.today().strftime('%B %d %Y')
@@ -99,6 +102,7 @@
                 next: cat_in
             Label:
                 text: 'Category'
+                size_hint_x: .5
             CostTextInput:
                 multiline: False
                 id: cat_in

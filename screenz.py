@@ -348,6 +348,7 @@ class MainScreen(Screen):
         
     
 class HelpScreen(Screen):
+    prev='main' ; prevTrans='down'
     clearPU=None
     def clearRecord(self):
         s ="Are you sure about this? This action will remove your"
@@ -367,7 +368,9 @@ class HelpScreen(Screen):
         lo.add_widget(btn2)
         pu.content=lo
         pu.open()
-    
+    def reset(self):
+        """Don't ask """
+        pass
     def doIt(self, obj):
         dump(App.get_running_app().d, open(App.get_running_app().user_data_dir+'/cost_backup', 'wb'))
         App.get_running_app().d={}

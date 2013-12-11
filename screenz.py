@@ -27,6 +27,7 @@ class QuickAddScreen(Screen):
     sub_btn=ObjectProperty()
     det_btn=ObjectProperty()
     back_btn=ObjectProperty()
+    prev='main'; prevTrans='left'
 
 class RMScreen(Screen):
     log=ObjectProperty()
@@ -35,7 +36,7 @@ class RMScreen(Screen):
     day_btn=ObjectProperty()
     ent_btn=ObjectProperty()
     cancel=ObjectProperty()
-
+    prev='help'; prevTrans='down'
     def dayBtnPush(self, obj):
         if not self.date_bx.nameMode: self.removeDay(obj)
     def entBtnPush(self, obj):
@@ -83,7 +84,7 @@ class RMScreen(Screen):
             self.entryNotFound()
 
     def entryNotFound(self):
-        pu=Popup(title="Failure..", size_hint=(1,.75))
+        pu=MyPopup(title="Failure..", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
         lab=Label(text_size=pu.size, text='There is no record for that entry\n'+\
                                  'Check your input', valign='middle', halign='center')
@@ -102,7 +103,7 @@ class RMScreen(Screen):
 
     
     def dayNotFound(self):
-        pu=Popup(title="Failure..", size_hint=(1,.75))
+        pu=MyPopup(title="Failure..", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
         lab=Label(text_size=pu.size, text='There is no record for that day\n'+\
                       'Check Help->Input Help for acceptable date formats', halign='center', valign='middle')
@@ -121,7 +122,7 @@ class RMScreen(Screen):
 
 
     def rmSuccess(self, entry=False):
-        pu=Popup(title="Success!", size_hint=(1,.75))
+        pu=MyPopup(title="Success!", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
         lab=Label(text=('Day' if not entry else 'Entry')+\
                              ' removed successfully',halign='center', valign='middle')
@@ -155,6 +156,7 @@ class RMScreen(Screen):
 
 class InputScreen(Screen):
     doc=ObjectProperty()
+    prev='help';prevTrans='right'
     def __init__(self, **kwargs):
         super(InputScreen, self).__init__(**kwargs)
         self.doc.source='help.rst'
@@ -171,6 +173,7 @@ class BkdwnScreen(Screen):
     mo_btn=ObjectProperty()
     wk_btn=ObjectProperty()
     at_btn=ObjectProperty()
+    prev='anlz';prevTrans= 'left'
     def __init__(self, **kwargs):
         super(BkdwnScreen, self).__init__(**kwargs)
         self.rst.text=breakdown(App.get_running_app().d)
@@ -189,7 +192,7 @@ class TotScreen(Screen):
     wk_btn=ObjectProperty()
     mo_btn=ObjectProperty()
     at_btn=ObjectProperty()
-
+    prev= 'anlz'; prevTrans='up'
     def __init__(self, **kwargs):
         super(TotScreen, self).__init__(**kwargs)
         self.displayATTops()
@@ -231,7 +234,7 @@ class TotScreen(Screen):
 
     def itemSum(self):
         textl=['herp'] # stupid trick
-        pu=Popup(title='Which?', size_hint=(1,.75))
+        pu=MyPopup(title='Which?', size_hint=(1,.75))
         lay=BoxLayout(orientation='vertical')
         lab=Label(text_size=pu.size, text='Which item do you want to get totals for?', halign='center', valign='middle')
         lab.bind(size=lab.setter('text_size')) 
@@ -250,7 +253,7 @@ class TotScreen(Screen):
         s='Amount spent on '+name+' this week: '+sumItem(App.get_running_app().d, name, 7)+'\n'
         s+='This month: '+sumItem(App.get_running_app().d, name, 30)+'\n'
         s+='All time: '+sumItem(App.get_running_app().d, name)+'\n'
-        pu=Popup(title='Totals', size_hint=(1,.75))
+        pu=MyPopup(title='Totals', size_hint=(1,.75))
         lay=BoxLayout(orientation='vertical')
         lab=Label(text_size=pu.size, text=(s if t>0 else 'There is no record of any entry with that name.\nTry again' ),\
                       halign='center',valign='middle')
@@ -275,7 +278,7 @@ class AddScreen(Screen):
     date_box=ObjectProperty()
     cat_box=ObjectProperty()
     save=ObjectProperty()
-
+    prev='qadd';prevTrans='left'
     def print_data(self):
         d=App.get_running_app().d
         l=[]
@@ -287,7 +290,8 @@ class AddScreen(Screen):
             addComplete(d,l)
             return True
         except:
-            pu=Popup(title='Input Error', size_hint=(1,.75), auto_dismiss=False)
+            pu=MyPopup(title='Input Error', size_hint=(1,.75), auto_dismiss=False)
+            App.get_running_app().popup=pu
             label=Label(text_size=pu.size, 
                         text='Something seems to be wrong with your input.\nCheck help if you\'re unsure what\'s wrong.',
                         halign='center',valign='middle')
@@ -304,25 +308,27 @@ class AddScreen(Screen):
 class ViewScreen(Screen):
     log=ObjectProperty()
     check=ObjectProperty()
+    prev='main' ; prevTrans='right'
     def __init__(self,**kwargs):
         super(ViewScreen,self).__init__(**kwargs)
         self.check.bind(active=self.on_checkbox_activate)
+        
     def reload(self): 
         self.log.text=printAll(App.get_running_app().d, self.check.active)
     def on_checkbox_activate(self, cb, val):
         self.reload()
-    
+
+
 class AnlzScreen(Screen):
-    pass
-
+    prev='main'; prevTrans='up'
 class MainScreen(Screen):
-
+    prev='main'; prevTrans='left'
     def __init__(self, **kwargs):
         super(MainScreen,self).__init__(**kwargs)
         if App.get_running_app().firstRun: Clock.schedule_once(self.firstRun, .1)
 
     def firstRun(self, obj):
-        pu=Popup(size_hint=(1, .6), title='Welcome to Cost!')
+        pu=MyPopup(size_hint=(1, .6), title='Welcome to Cost!')
         lo=BoxLayout(orientation='vertical')
         lab=Label(text="Hi! Cost is a program designed to help you track and "+\
         "understand where your money is going. We've provided you with a one-month "+\
@@ -350,7 +356,7 @@ class HelpScreen(Screen):
         s+="cost_save manually, and as of now there is no way to merge records"
         s+="Of course, if you're just removing the example and want to get"
         s+="started, go right ahead"
-        pu=Popup(size_hint=(.8, .6), title='Are you sure?')
+        pu=MyPopup(size_hint=(.8, .6), title='Are you sure?')
         self.clearPU=pu
         lo=BoxLayout(orientation='vertical')
         lab=Label(text=s,halign='center',valign='middle')

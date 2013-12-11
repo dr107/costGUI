@@ -21,6 +21,16 @@ from os.path import isfile
 from functools import partial
 
 
+class MyPopUp(Popup):
+    """Make popups update App.popup """
+    def __init__(self):
+        super(Popup,self).__init__()
+        App.get_running_app().popup=self
+    
+    def dismiss(self):
+        App.get_running_app().popup=None
+        super(Popup,self).dismiss()
+
 class QuickAddBox(TextInput):
     def __init__(self, **kwargs):
         super(QuickAddBox, self).__init__(**kwargs)

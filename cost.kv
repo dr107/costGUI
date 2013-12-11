@@ -54,14 +54,14 @@
             orientation: 'horizontal'
             size_hint: 1,.1
             Button:
-                text: 'Back to Main'
-                
+                text: 'Back'
+                size_hint: .5,1
                 on_press:
                     root.manager.transition=SlideTransition(direction="right")
                     root.manager.current='main'
             Label:
-                text: 'Categories'
-                size_hint: .2,1
+                text: 'Show Categories'
+                size_hint: .7,1
             CheckBox:
                 id: cb
                 size_hint: .1,1

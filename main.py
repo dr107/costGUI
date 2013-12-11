@@ -8,8 +8,12 @@ from kivy.core.window import Window
 from kivy.uix.widget import WidgetException
 """
 TODO:
-    Make popups stored in App.popup
-    Make every screen have a prev and prevTrans
+    Make popups stored in App.popup so that android back button closes them-***crucial***
+    Make every screen have a prev and prevTrans--Perhaps done?
+    MAKE THE EXAMPLE WORK in terms of dates 
+
+LONG TERM: 
+    make the stupid dictionary less stupid, i.e. refactor the back end
 """
 
 

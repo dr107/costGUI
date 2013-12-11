@@ -264,7 +264,6 @@ def addComplete(d, l):
             addRetro(d, day[0], day[1], l[1].title(), l[2], day[2], l[3].title())
         else:
             raise Exception()
-
     else:
         if len(l)==2:
             category=raw_input("Type the category of this item (hit enter to put it in Misc.)\n")

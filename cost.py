@@ -428,3 +428,15 @@ def getMostRecentCost(d, name):
             n=cost[cost.find(';')+2:cost.rfind(':')].title()
             if n==name.title(): return cost
     return None
+
+def fixDict(d):
+    delta=date.today()-date(2013,7,29)
+    for dat in d.keys():
+        val=d[dat]
+        del d[dat]
+        newDat=(datetime.strptime(dat,'%B %d %Y')+delta).strftime('%B %d %Y')
+        d[newDat]=val
+    return d
+
+
+

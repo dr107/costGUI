@@ -21,6 +21,7 @@ from cPickle import load, dump
 from datetime import *
 from os.path import isfile
 from functools import partial
+from myWids import *
 
 class QuickAddScreen(Screen):
     qab=ObjectProperty()
@@ -84,7 +85,7 @@ class RMScreen(Screen):
             self.entryNotFound()
 
     def entryNotFound(self):
-        pu=MyPopup(title="Failure..", size_hint=(1,.75))
+        pu=MyPopUp(title="Failure..", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
         lab=Label(text_size=pu.size, text='There is no record for that entry\n'+\
                                  'Check your input', valign='middle', halign='center')
@@ -103,7 +104,7 @@ class RMScreen(Screen):
 
     
     def dayNotFound(self):
-        pu=MyPopup(title="Failure..", size_hint=(1,.75))
+        pu=MyPopUp(title="Failure..", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
         lab=Label(text_size=pu.size, text='There is no record for that day\n'+\
                       'Check Help->Input Help for acceptable date formats', halign='center', valign='middle')
@@ -122,7 +123,7 @@ class RMScreen(Screen):
 
 
     def rmSuccess(self, entry=False):
-        pu=MyPopup(title="Success!", size_hint=(1,.75))
+        pu=MyPopUp(title="Success!", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
         lab=Label(text=('Day' if not entry else 'Entry')+\
                              ' removed successfully',halign='center', valign='middle')
@@ -234,7 +235,7 @@ class TotScreen(Screen):
 
     def itemSum(self):
         textl=['herp'] # stupid trick
-        pu=MyPopup(title='Which?', size_hint=(1,.75))
+        pu=MyPopUp(title='Which?', size_hint=(1,.75))
         lay=BoxLayout(orientation='vertical')
         lab=Label(text_size=pu.size, text='Which item do you want to get totals for?', halign='center', valign='middle')
         lab.bind(size=lab.setter('text_size')) 
@@ -253,7 +254,7 @@ class TotScreen(Screen):
         s='Amount spent on '+name+' this week: '+sumItem(App.get_running_app().d, name, 7)+'\n'
         s+='This month: '+sumItem(App.get_running_app().d, name, 30)+'\n'
         s+='All time: '+sumItem(App.get_running_app().d, name)+'\n'
-        pu=MyPopup(title='Totals', size_hint=(1,.75))
+        pu=MyPopUp(title='Totals', size_hint=(1,.75))
         lay=BoxLayout(orientation='vertical')
         lab=Label(text_size=pu.size, text=(s if t>0 else 'There is no record of any entry with that name.\nTry again' ),\
                       halign='center',valign='middle')
@@ -290,7 +291,7 @@ class AddScreen(Screen):
             addComplete(d,l)
             return True
         except:
-            pu=MyPopup(title='Input Error', size_hint=(1,.75), auto_dismiss=False)
+            pu=MyPopUp(title='Input Error', size_hint=(1,.75), auto_dismiss=False)
             App.get_running_app().popup=pu
             label=Label(text_size=pu.size, 
                         text='Something seems to be wrong with your input.\nCheck help if you\'re unsure what\'s wrong.',
@@ -328,7 +329,7 @@ class MainScreen(Screen):
         if App.get_running_app().firstRun: Clock.schedule_once(self.firstRun, .1)
 
     def firstRun(self, obj):
-        pu=MyPopup(size_hint=(1, .6), title='Welcome to Cost!')
+        pu=MyPopUp(size_hint=(1, .6), title='Welcome to Cost!')
         lo=BoxLayout(orientation='vertical')
         lab=Label(text="Hi! Cost is a program designed to help you track and "+\
         "understand where your money is going. We've provided you with a one-month "+\
@@ -357,7 +358,7 @@ class HelpScreen(Screen):
         s+="cost_save manually, and as of now there is no way to merge records"
         s+="Of course, if you're just removing the example and want to get"
         s+="started, go right ahead"
-        pu=MyPopup(size_hint=(.8, .6), title='Are you sure?')
+        pu=MyPopUp(size_hint=(.8, .6), title='Are you sure?')
         self.clearPU=pu
         lo=BoxLayout(orientation='vertical')
         lab=Label(text=s,halign='center',valign='middle')

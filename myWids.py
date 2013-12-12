@@ -20,14 +20,13 @@ from datetime import *
 from os.path import isfile
 from functools import partial
 
-
 class MyPopUp(Popup):
     """Make popups update App.popup """
-    def __init__(self):
-        super(Popup,self).__init__()
+    def __init__(self,**kwargs):
+        super(Popup,self).__init__(**kwargs)
         App.get_running_app().popup=self
     
-    def dismiss(self):
+    def dismiss(self,*largs,**kwargs):
         App.get_running_app().popup=None
         super(Popup,self).dismiss()
 
@@ -75,7 +74,7 @@ class QuickAddBox(TextInput):
         name=cost[cost.find(';')+2:cost.rfind(':')].title()
         price=cost[cost.rfind(':')+2:]
         l=[name, price, cat]
-        pu=Popup(title="Entry Found!", size_hint=(1,.75))
+        pu=MyPopUp(title="Entry Found!", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
         lab=Label(text_size=pu.size, text='The following data were found:\n'+\
                   'Name: '+name+'\n'
@@ -95,7 +94,7 @@ class QuickAddBox(TextInput):
         
 
     def displayFailure(self):
-        pu=Popup(title="Failure..", size_hint=(1,.75))
+        pu=MyPopUp(title="Failure..", size_hint=(1,.75))
         blo=BoxLayout(orientation='vertical', spacing="5dp")
         lab=Label(text_size=pu.size, text='There are no entries with that name\n'+\
                       'Check your input, or use the normal add function',

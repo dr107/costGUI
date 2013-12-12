@@ -8,12 +8,13 @@ from kivy.core.window import Window
 from kivy.uix.widget import WidgetException
 """
 TODO:
-    Make popups stored in App.popup so that android back button closes them-***crucial***
+    Make popups stored in App.popup so that android back button closes them-***crucial***-maybe done
     Make every screen have a prev and prevTrans--Perhaps done?
-    MAKE THE EXAMPLE WORK in terms of dates 
+    MAKE THE EXAMPLE WORK in terms of dates --Maybe done
 
 LONG TERM: 
     make the stupid dictionary less stupid, i.e. refactor the back end
+    in fact, just refactor everything ---lol.......
 """
 
 
@@ -43,7 +44,7 @@ class CostApp(App):
     firstRun=False
 
     def firstRunOp(self):
-        dump(load(open('cost_save_example', 'rb')), open(self.fName, 'wb'))
+        dump(fixDict(load(open('cost_save_example', 'rb'))), open(self.fName, 'wb'))
         self.firstRun=True
 
     def build(self):
@@ -57,6 +58,7 @@ class CostApp(App):
         self.fName=self.user_data_dir+'/cost_save'
         if not isfile(self.fName): self.firstRunOp()
         self.d=p.load(open(self.fName, 'rb'))
+        print self.d
         sm=MyScreenManager()
         sm.add_widget(MainScreen(name='main'))
         sm.add_widget(ViewScreen(name='view'))

@@ -313,10 +313,10 @@ class ViewScreen(Screen):
     def __init__(self,**kwargs):
         super(ViewScreen,self).__init__(**kwargs)
         self.check.bind(active=self.on_checkbox_activate)
-        
     def reload(self): 
         self.log.text=printAll(App.get_running_app().d, self.check.active)
     def on_checkbox_activate(self, cb, val):
+        print 'reload called\n\n\n\n\n\n\n\n'
         self.reload()
 
 

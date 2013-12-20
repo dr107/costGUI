@@ -58,7 +58,6 @@ class CostApp(App):
         self.fName=self.user_data_dir+'/cost_save'
         if not isfile(self.fName): self.firstRunOp()
         self.d=p.load(open(self.fName, 'rb'))
-        print self.d
         sm=MyScreenManager()
         sm.add_widget(MainScreen(name='main'))
         sm.add_widget(ViewScreen(name='view'))

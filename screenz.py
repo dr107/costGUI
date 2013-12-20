@@ -23,6 +23,8 @@ from os.path import isfile
 from functools import partial
 from myWids import *
 
+
+
 class QuickAddScreen(Screen):
     qab=ObjectProperty()
     sub_btn=ObjectProperty()
@@ -289,6 +291,7 @@ class AddScreen(Screen):
         l+=[str(self.cat_box.text.strip()) if str(self.cat_box.text.strip())!='' else 'Misc.']; self.cat_box.text=''
         try:
             addComplete(d,l)
+            App.get_running_app().man.get_screen('view').refresh()
             return True
         except:
             pu=MyPopUp(title='Input Error', size_hint=(1,.75), auto_dismiss=False)
@@ -313,8 +316,12 @@ class ViewScreen(Screen):
     def __init__(self,**kwargs):
         super(ViewScreen,self).__init__(**kwargs)
         self.check.bind(active=self.on_checkbox_activate)
+        self.logs=printAllTup(App.get_running_app().d)
     def reload(self): 
-        self.log.text=printAll(App.get_running_app().d, self.check.active)
+        self.log.text=self.logs[1 if self.check.active else 0]
+    def refresh(self):
+        """Recalculate view screen. Call when something has changed. """
+        self.logs=printAllTup(App.get_running_app().d)
     def on_checkbox_activate(self, cb, val):
         print 'reload called\n\n\n\n\n\n\n\n'
         self.reload()

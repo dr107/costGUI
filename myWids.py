@@ -66,6 +66,7 @@ class QuickAddBox(TextInput):
     def logIt(self, l, obj=None):
         d=App.get_running_app().d
         addComplete(d, l)
+        App.get_running_app().man.get_screen('view').refresh()
         self.text=''
         self.focus=False
 

@@ -97,7 +97,7 @@ def getTime(j):
     l.reverse()
     return l
             
-
+# WTF is this doing here. I mean, seriously, what?
 def leapyr(n):
     if n % 400 == 0:
         return True
@@ -191,6 +191,11 @@ def getData(d):
         for k, v in d.items()]
     data.sort()
     return data
+
+def printAllTup(d):
+    data=getData(d)
+    data.reverse()
+    return (printData(data, False),printData(data,True))
 
 def printAll(d, cat):
     data=getData(d)

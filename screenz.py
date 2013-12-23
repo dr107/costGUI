@@ -22,7 +22,7 @@ from datetime import *
 from os.path import isfile
 from functools import partial
 from myWids import *
-
+from kivy.graphics import Rectangle
 
 
 class QuickAddScreen(Screen):
@@ -323,17 +323,23 @@ class ViewScreen(Screen):
         """Recalculate view screen. Call when something has changed. """
         self.logs=printAllTup(App.get_running_app().d)
     def on_checkbox_activate(self, cb, val):
-        print 'reload called\n\n\n\n\n\n\n\n'
         self.reload()
 
 
 class AnlzScreen(Screen):
     prev='main'; prevTrans='up'
+
 class MainScreen(Screen):
     prev='main'; prevTrans='left'
+    lo=ObjectProperty()
+    viewbtn=ObjectProperty()
     def __init__(self, **kwargs):
         super(MainScreen,self).__init__(**kwargs)
         if App.get_running_app().firstRun: Clock.schedule_once(self.firstRun, .1)
+
+    def _update_bkgd(self, instance, value):
+        self.bkgd.pos=instance.pos
+        self.bkgd.size=instance.size
 
     def firstRun(self, obj):
         pu=MyPopUp(size_hint=(1, .6), title='Welcome to Cost!')

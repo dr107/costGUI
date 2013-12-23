@@ -13,7 +13,10 @@
 #:import breakdown cost.breakdown
 #:import partial functools.partial
 <MainScreen>:
+    lo: _lo
+    viewbtn: _viewbtn
     BoxLayout:
+        id: _lo
         orientation: 'vertical'
         spacing: "30dp"
         padding: "10dp"
@@ -22,6 +25,7 @@
             font_size: "30dp"
         Button:
             text: 'View'
+            id: _viewbtn  
             on_press: 
                 root.manager.get_screen('view').reload()
                 root.manager.get_screen('view').log.goto('_bottom:')
@@ -260,7 +264,10 @@
         Label:
             text: 'Breakdown of costs'
             font_size: '30dp'
+            size_hint_y: .5
         Label:
+            valign: 'top'
+            font_size: '15dp'
             id: _rst
         GridLayout:
             size_hint_y: .25
@@ -297,54 +304,29 @@
     at_btn: _at_btn
     BoxLayout:
         orientation: 'vertical'
-        GridLayout:
-            size_hint:1,.5
-            cols:2
-            Label:
-                id: _title
-                text: 'Total Expenditures'
-                halign: 'center'
-            Button:
-                size_hint_x: .25
-                text: 'Back'
-                on_release:
-                    root.manager.transition=SlideTransition(direction='up')
-                    root.manager.current='anlz'
-        GridLayout:
-            cols: 2
+        Label:
+            id: _title
+            text: 'Total Expenditures'
+            halign: 'center'
+            bold: True
+            font_size: '30dp'
             size_hint_y: .5
-            Label:
-                id: _tots
-                halign: 'center'
-            Button:
-                text: 'Back to main'
-                size_hint_x: .25
-                on_release:
-                    root.manager.transition=SlideTransition(direction="up")
-                    root.manager.current='anlz'
-                    Clock.schedule_once(root.gotoMain, .5)
-        GridLayout:
-            cols: 2
-            size_hint_y: .5
-            Label:
-                id: _top_title
-                halign: 'center'
-                valign: 'bottom'
-                text: 'Top Items (All Time)'
-                size_hint: 1,.1
-                bold: True
-            Button:
-                size_hint_x: .25
-                text: 'Sum Item'
-                on_release: root.itemSum()
-        GridLayout:
-            cols: 2
-            Label:
-                id: _tops
-                halign: 'center'
-                valign: 'top'
-            Label:
-                size_hint_x: .25
+
+        Label:
+            id: _tots
+            halign: 'center'
+        Label:
+            id: _top_title
+            halign: 'center'
+            valign: 'bottom'
+            text: 'Top Items (All Time)'
+            size_hint: 1,.1
+            font_size: '20dp'
+            bold: True
+        Label:
+            id: _tops
+            halign: 'center'
+            valign: 'top'
         GridLayout:
             size_hint: 1,.3
             id: _grd
@@ -361,6 +343,10 @@
                 id: _at_btn
                 text: 'All time'
                 on_release: root.displayATTops()
+        Button:
+            text: 'Analyze totals for item'
+            on_release: root.itemSum()
+            size_hint_y: .3
 
 <QuickAddScreen>:
     qab: _qab

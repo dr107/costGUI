@@ -343,7 +343,6 @@ def sumCat(d, cat, ndays=-1):
     return res
                 
 def breakdown(d, ndays=-1, obj=None):
-    print 'called'
     tot=float(sumTime(d, ndays)[1:]) if ndays>0 else sumAll(d)
     s=getCatSet(d, ndays)
     s=list(s)
